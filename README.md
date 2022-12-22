@@ -22,3 +22,20 @@ You can then invoke (or bind to a hotkey) the following command:
 :Telescope langoustine enable_lsp_tracer
 ```
 
+What this plugin does is replace the original command `cmd` which was used to start LSP server 
+with a modified command that prepends langoustine tracer parameters.
+
+By default it prepends `langoustine-tracer trace` - assuming you have a `langoustine-tracer` binary set up
+globally.
+
+You can modify that by configuring the extensions section when you set up telescope:
+
+```lua 
+  require("telescope").setup({
+    extensions = {
+      langoustine = {
+        command_prefix = { "langoustine-tracer-dev", "trace" }
+      }
+    }
+  })
+```

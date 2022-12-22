@@ -15,9 +15,6 @@ local conf = require("telescope.config").values
 local actions = require "telescope.actions"
 local action_state = require "telescope.actions.state"
 
-local langoustine_config = {
-  command_prefix = { "langoustine-tracer", "trace" }
-}
 
 local function get_lsps()
   local lsps = {}
@@ -34,7 +31,8 @@ end
 
 local M = {}
 
-M.enable_lsp_tracer = function(opts)
+M.enable_lsp_tracer = function(opts, ext_ops)
+  print(vim.inspect(ext_ops))
   opts = opts or {}
   pickers.new(opts, {
     prompt_title = "LSP client to restart with tracing",
@@ -58,7 +56,7 @@ M.enable_lsp_tracer = function(opts)
         local old_config = old_client.config
         local attached_buffers = vim.lsp.get_buffers_by_client_id(old_client.id)
         local old_command = old_config.cmd
-        local new_command = langoustine_config.command_prefix
+        local new_command = ext_ops.command_prefix
 
         for _, arg in pairs(old_command) do
           table.insert(new_command, arg)
