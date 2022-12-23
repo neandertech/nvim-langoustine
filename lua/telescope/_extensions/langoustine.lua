@@ -4,7 +4,6 @@ if not ok then
   error 'Install nvim-telescope/telescope.nvim'
 end
 
--- local enable_lsp_tracer = require 'telescope._extensions.langoustine.enable_lsp_tracer'
 
 local default_opts = {
   command_prefix = { "langoustine-tracer", "trace" }

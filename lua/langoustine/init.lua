@@ -56,7 +56,7 @@ M.enable_lsp_tracer = function(opts, ext_ops)
         local old_config = old_client.config
         local attached_buffers = vim.lsp.get_buffers_by_client_id(old_client.id)
         local old_command = old_config.cmd
-        local new_command = ext_ops.command_prefix
+        local new_command = deepCopy(ext_ops.command_prefix)
 
         for _, arg in pairs(old_command) do
           table.insert(new_command, arg)
@@ -73,7 +73,11 @@ M.enable_lsp_tracer = function(opts, ext_ops)
         vim.lsp.stop_client(old_client.id, true)
         vim.lsp.stop_client(old_client.id, true)
 
-        vim.inspect(vim.lsp.start(new_config, { bufnr = nil, reuse_client = function(_, _) return false end }))
+        local new_client_id = vim.lsp.start(new_config, { bufnr = -1, reuse_client = function(_, _) return false end })
+
+        for _, bufnr in ipairs(attached_buffers) do
+          vim.lsp.buf_attach_client(bufnr, new_client_id)
+        end
 
       end)
       return true
